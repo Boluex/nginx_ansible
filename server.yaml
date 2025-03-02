@@ -1,0 +1,20 @@
+---
+- name : Ansible nginx
+  hosts: ubuntuserver
+  become: true
+  tasks:
+      - name: starting and installing nginx
+        apt:
+         name: nginx
+         state: present
+      - name: copying html file 
+        ansible.builtin.template:
+           src: /home.html
+           dest: /var/www/html/index.html
+        notify: restart nginx
+
+  handlers:
+  - name: restart nginx
+    service:
+       name: nginx
+       state: restarted
